@@ -21,13 +21,13 @@
 >
 > MySQL：5.7
 
-![版本信息](src/main/resouces/static/imgs/搜狗截图20191224173218.png)
+![版本信息](src/main/resources/static/imgs/搜狗截图20191224173218.png)
 
 ## 3. 构建数据库
 
 这里使用的 Navicat Premium工具进行构建
 
-![数据库建模](src/main/resouces/static/imgs/搜狗截图20191230172322.png)
+![数据库建模](src/main/resources/static/imgs/搜狗截图20191230172322.png)
 
 建表语句如下
 
@@ -140,7 +140,7 @@ CREATE TABLE `user_role` (
 
 选择 spring Web 、Thymeleaf、security、MYSQL Driver、Mybatis Framework。
 
-![spring Initializer 截图](src/main/resouces/static/imgs/搜狗截图20191230170408.png)
+![spring Initializer 截图](src/main/resources/static/imgs/搜狗截图20191230170408.png)
 
 
 
