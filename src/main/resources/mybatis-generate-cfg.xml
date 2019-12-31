@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd" >
+<generatorConfiguration>
+<!--  <properties resource="mybatis.properties" />
+     -->
+<classPathEntry location="H:\repo\maven\mysql\mysql-connector-java\8.0.16\mysql-connector-java-8.0.16.jar" />
+<context id="msqlTables" targetRuntime="MyBatis3">
+    <plugin type="org.mybatis.generator.plugins.SerializablePlugin"></plugin>
+    <jdbcConnection connectionURL="jdbc:mysql://localhost:3306/security-boot?serverTimezone=GMT%2B8"
+                    driverClass="com.mysql.cj.jdbc.Driver" password="root" userId="root" >
+
+        <property name="nullCatalogMeansCurrent" value="true"/>
+    </jdbcConnection>
+    <javaTypeResolver>
+        <property name="forceBigDecimals" value="false" />
+    </javaTypeResolver>
+    <javaModelGenerator targetPackage="top.capiudor.security.entity" targetProject="F:\git-space\idea\boot-security\src\main\java">
+        <property name="enableSubPackages" value="true"/>
+        <!-- 从数据库返回的值被清理前后的空格  -->
+        <property name="trimStrings" value="true" />
+    </javaModelGenerator>
+    <sqlMapGenerator targetPackage="top.capiudor.security.dao" targetProject="F:\git-space\idea\boot-security\src\main\java">
+        <property name="enableSubPackages" value="true"/>
+    </sqlMapGenerator>
+    <javaClientGenerator type="XMLMAPPER" targetPackage="top.capiudor.security.dao" targetProject="F:\git-space\idea\boot-security\src\main\java">
+        <property name="enableSubPackages" value="true"/>
+    </javaClientGenerator>
+
+    <!--数据库表-->
+    <table tableName="user" domainObjectName="User"
+           enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false"
+           enableSelectByExample="false" selectByExampleQueryId="false" >
+        <property name="useActualColumnNames" value="false"/>
+    </table>
+    <table tableName="role" domainObjectName="Role"
+           enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false"
+           enableSelectByExample="false" selectByExampleQueryId="false" >
+        <property name="useActualColumnNames" value="false"/>
+    </table>
+    <table tableName="resource" domainObjectName="Resource"
+           enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false"
+           enableSelectByExample="false" selectByExampleQueryId="false" >
+        <property name="useActualColumnNames" value="false"/>
+    </table>
+    <table tableName="resource_role" domainObjectName="ResourceRole"
+           enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false"
+           enableSelectByExample="false" selectByExampleQueryId="false" >
+        <property name="useActualColumnNames" value="false"/>
+    </table>
+    <table tableName="user_role" domainObjectName="UserRole"
+           enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false"
+           enableSelectByExample="false" selectByExampleQueryId="false" >
+        <property name="useActualColumnNames" value="false"/>
+    </table>
+</context>
+</generatorConfiguration>
