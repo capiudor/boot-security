@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="top.capiudor.security.dao.ResourcesRoleDTOMapper">
+    <resultMap id="BaseResultMap" type="top.capiudor.security.entity.RoleResourceDTO">
+        <result column="role_name" property="roleName" jdbcType="VARCHAR"/>
+        <result column="res_name" property="resourceName" jdbcType="VARCHAR"/>
+        <result column="res_url" property="resourceUrl" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+       role_name,res_url,res_name
+    </sql>
+    <select id="selectAllResourcesFKRole" resultMap="BaseResultMap">
+       SELECT
+        res_name,res_url,role_name
+        from resource res JOIN resource_role rr on rr.res_id = res.id
+        JOIN role r on r.id = rr.role_id
+        GROUP BY res.res_url
+    </select>
+</mapper>

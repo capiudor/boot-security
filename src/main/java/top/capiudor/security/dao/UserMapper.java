@@ -1,5 +1,6 @@
 package top.capiudor.security.dao;
 
+import org.apache.ibatis.annotations.Select;
 import top.capiudor.security.entity.User;
 
 public interface UserMapper {
@@ -50,4 +51,6 @@ public interface UserMapper {
      * @mbggenerated Tue Dec 31 15:09:44 CST 2019
      */
     int updateByPrimaryKey(User record);
+
+    User selectByUsername(String useranme);
 }

@@ -1,22 +1,15 @@
 package top.capiudor.security.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import top.capiudor.security.dao.ResourcesRoleDTOMapper;
-import top.capiudor.security.entity.Resource;
-import top.capiudor.security.entity.ResourceRole;
-import top.capiudor.security.entity.Role;
 import top.capiudor.security.entity.RoleResourceDTO;
-import top.capiudor.security.service.ResourceRoleService;
-import top.capiudor.security.service.ResourceService;
-import top.capiudor.security.service.RoleService;
-
-import javax.sql.DataSource;
 import java.util.List;
 
 /**
@@ -26,11 +19,16 @@ import java.util.List;
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
+    /**
+     * 注入 ResourcesRoleDTOMapper，查询 URL 和 对应的角色
+     */
     @Autowired
     private ResourcesRoleDTOMapper resourcesRoleDTOMapper;
 
     @Autowired
-    private DataSource dataSource;
+    @Qualifier("userDetailsServiceImpl")
+    private UserDetailsService userDetailsService;
+
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -39,23 +37,51 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/").permitAll();
         // 遍历添加 角色与url 的关联
         for (RoleResourceDTO roleResourceDto :roleResourceDTOS) {
-            http.authorizeRequests().antMatchers(roleResourceDto.getResourceUrl()).hasRole(roleResourceDto.getRoleName());
+            /**
+             * 这里使用 的 是  hasAuthority 方法  ，hasRole 默认前缀是  加上了 ROLE_
+             * @See org.springframework.security.config.annotation.web.configurers.ExpressionUrlAuthorizationConfigurer#hasAnyRole(java.lang.String...)
+             */
+            http.authorizeRequests().antMatchers(roleResourceDto.getResourceUrl()).hasAuthority(roleResourceDto.getRoleName());
         }
         // 设置login方法
         http
+                /**
+                 * 这里可以对 login page（自定义登录界面）、
+                 * defaultSuccessUrl（默认成功路径） 、
+                 * failureHandler()对失败进行处理 、
+                 * successHandler()对成功进行处理 、
+                 * usernameParameter 、自定义Login页面的 用户名 输入框input name值
+                 * passwordParameter 、自定义Login页面的 密码 输入框input name值
+                 */
             .formLogin().usernameParameter("username").passwordParameter("password")
-            .loginPage("/toLogin");
+            .loginPage("/login")
+            .defaultSuccessUrl("/");
         http
+                /**
+                 * 对 登出成功的路径进行设置
+                 */
             .logout().logoutSuccessUrl("/");
         http
+                /**
+                 * 开启记住我功能
+                 *  rememberMeParameter 设置 <code><input type="checkbox" name="remember"></code>  security 可以根据此进行识别是否记住我
+                 */
             .rememberMe().rememberMeParameter("remember");
     }
 
+    /**
+     * 这里是Spring security 5.x 的新特性，必须使用 BCryptPasswordEncoder对密码进行加密处理
+     * 如下所示：我们可以自己在注册的时候加密处理
+     * <code>
+     *      String password = "123456";
+     *      String encode = new BCryptPasswordEncoder().encode(password);
+     * </code>
+     *
+     * @param auth
+     * @throws Exception
+     */
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.jdbcAuthentication()
-                .dataSource(dataSource)
-                .withDefaultSchema();  // 继续深入
-
+        auth.userDetailsService(userDetailsService).passwordEncoder(new BCryptPasswordEncoder());
     }
 }

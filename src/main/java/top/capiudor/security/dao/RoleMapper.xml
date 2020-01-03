@@ -39,6 +39,11 @@
     <include refid="Base_Column_List" />
     from role
   </select>
+  <select id="selectRolesByUserId" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+     select r.id,role_name
+     from role r join user_role ur on ur.role_id = r.id
+     where ur.user_id = #{userId,jdbcType=INTEGER}
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     <!--
       WARNING - @mbggenerated

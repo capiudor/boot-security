@@ -5,6 +5,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+/**
+ * 映射路径
+ */
 @Controller
 public class WebController {
 
@@ -59,18 +62,4 @@ public class WebController {
     public String level3(@PathVariable("path") String path){
         return PREFIX + "level3/" + path;
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 }

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security5"
 >
 <head>
     <meta charset="UTF-8">
@@ -11,7 +11,7 @@
 
 <h1 align="center">欢迎光临阴曹地府管理系统</h1>
 <div sec:authorize="!isAuthenticated()">
-    <h2 align="center">您好，如果想进入阴曹地府 <a th:href="@{/userlogin}">请登录</a></h2>
+    <h2 align="center">您好，如果想进入阴曹地府 <a th:href="@{/toLogin}">请登录</a></h2>
 </div>
 <div sec:authorize="isAuthenticated()">
     <h2><span sec:authentication="name"></span>，您好,您的角色有：
@@ -23,7 +23,7 @@
 
 <hr>
 
-<div sec:authorize="hasRole('VIP1')">
+<div sec:authorize="hasAuthority('super')">
     <h3>最高神职</h3>
     <ul>
         <li><a th:href="@{/level1/1}">天齐仁圣大帝</a></li>
@@ -33,7 +33,7 @@
 
 </div>
 
-<div sec:authorize="hasRole('VIP2')">
+<div sec:authorize="hasAuthority('admin')">
     <h3>罗酆六天</h3>
     <ul>
         <li><a th:href="@{/level2/1}">宗灵七非天宫、敢司连宛屡天宫</a></li>
@@ -43,7 +43,7 @@
 
 </div>
 
-<div sec:authorize="hasRole('VIP3')">
+<div sec:authorize="hasAuthority('user')">
     <h3>阴曹地府</h3>
     <ul>
         <li><a th:href="@{/level3/1}">秦广王、楚江王、宋帝王、仵官王</a></li>
